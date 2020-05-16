@@ -1,0 +1,11 @@
+{
+  "name": "react-form",
+  "version": "1.0.0",
+  "description": "React form ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mukesh Kumar Suman",
+  "license": "ISC"
+}
