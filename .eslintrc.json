@@ -1,0 +1,58 @@
+{
+    "extends": ["airbnb", "airbnb/hooks"],
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "semi": "off",
+        "linebreak-style": "off",
+        "guard-for-in": "off",
+        "prefer-destructuring": "off",
+        "func-names": ["warn", "never"],
+        "no-param-reassign": "warn",
+        "no-underscore-dangle": "off",
+        "prefer-arrow-callback": "warn",
+        "consistent-return": "warn",
+        "prefer-rest-params": "warn",
+        "no-use-before-define": "warn",
+        "no-plusplus": ["error", {
+            "allowForLoopAfterthoughts": true
+         }],
+         "valid-typeof": ["error", { "requireStringLiterals": false }],
+        "class-methods-use-this": "warn",
+        "no-restricted-syntax": "warn",
+        "no-shadow": "warn",
+        "max-params": ["error", 4],
+        "curly": "error",
+        "eol-last": ["error", "never"],
+        "max-len": ["error", { "ignoreComments": true, "code": 500 }],
+        "space-in-parens": ["error", "never"],
+        "arrow-parens": ["error", "as-needed"],
+        "array-callback-return": "off",
+        "class-methods-use-this": "off",
+        // Recat
+        "react/state-in-constructor": "off",
+        "indent": "off",
+        "comma-dangle": ["error", "never"],
+        "react/jsx-props-no-spreading": [0],
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/jsx-tag-spacing" : [2, {
+            "closingSlash": "never",
+            "beforeSelfClosing": "always",
+            "afterOpening": "never",
+            "beforeClosing": "allow"
+        }],
+        "react/jsx-indent": [0, "tab"],
+        "import/newline-after-import": ["error", { "count": 1 }],
+        "react/destructuring-assignment": [2, "never"]
+    }
+}

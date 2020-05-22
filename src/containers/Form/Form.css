@@ -1,0 +1,95 @@
+.form {
+  background-color: aliceblue;;
+  border-radius: 10px;
+  padding-bottom: 20px;
+}
+.flex_container {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+  
+
+  .flex_container > div {
+    background-color: none;
+    text-align: left;
+    font-size: 15px;
+  }
+
+  .fields {
+    padding: 5px;
+    position: relative;
+    background-color: rgba(0, 123, 255, 0.05);
+    margin: 10px;
+    border-radius: 5px;
+  }
+  .invalid_field {
+    border: 1px solid red;
+  }
+
+  .invalid_field > p{
+    margin: 0;
+  }
+  .error {
+    color: red;
+  }
+  .fields > label {
+    padding-right: 10px;
+    width: 40%;
+  }
+  .fields > input {
+    border-radius: 5px;
+    width: 56%;
+  }
+
+  .fields > div {
+    display: inline-flex;
+  }
+
+  .fields > div:first-child {
+    margin-right: 15px;
+  }
+
+  @media only screen and (max-width: 750px) {
+    .flex_container > div {
+        width: 100%;
+      }
+  }
+
+  @media only screen and (max-width: 350px) {
+    .fields input {
+        width: 100%;
+      }
+  }
+  
+  .button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    left: 12px;
+    position: relative;
+    top: 10px;
+  }
+
+  .button:hover {
+    background-color: green;
+    border-color: green;
+    border-radius: 5px;
+  }
+
+  .options {
+    margin: 0 10px;
+  }
+
+  
+  .Header {
+    background-color: #90c7f7;
+    border-radius: 5px;
+    height: auto;
+    padding-bottom: 10px;
+    margin: calc(2rem - .14285714em) 0 0.5rem;
+}
+

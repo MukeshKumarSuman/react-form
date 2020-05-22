@@ -1,0 +1,10 @@
+$body-color: red;
+
+.Name {
+  color: $body-color;
+  div {
+      width:  400px;
+      height: 100px;
+      background-color: green;
+  }
+}
