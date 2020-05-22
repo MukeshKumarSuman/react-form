@@ -7,16 +7,16 @@ class App extends Component {
     state = {
         fields: [
             {
-                label: 'Full Name', name: 'fullName', type: 'text', editable: false, onChangeHandler: this.onChangeHandler, value: 'Mukesh Kumar Suman', valid: true, validationMessage: 'Please enter your name', validator: this.validator
+                label: 'Full Name', name: 'fullName', type: 'text', editable: true, onChangeHandler: this.onChangeHandler, value: 'Mukesh Kumar Suman', valid: true, validationMessage: 'Please enter your name', validator: this.validator
             },
             {
-                label: 'User Name', name: 'username', type: 'text', editable: false, onChangeHandler: this.onChangeHandler, value: 'Mukesh Suman', validationMessage: 'Please enter user name', validator: this.validator
+                label: 'User Name', name: 'username', type: 'text', editable: true, onChangeHandler: this.onChangeHandler, value: 'Mukesh Suman', validationMessage: 'Please enter user name', validator: this.validator
             },
             {
-                label: 'Home City', name: 'homeCity', type: 'checkbox', editable: true, onChangeHandler: this.onChangeHandler, options: ['Delhi', 'Bangalor', 'Hajipur', 'Patna', 'Kista', 'Talin'], value: 'Hajipur,Delhi', splitter: '|'
+                label: 'Home City', name: 'homeCity', type: 'checkbox', editable: true, onChangeHandler: this.onChangeHandler, options: ['Delhi', 'Bangalor', 'Hajipur', 'Patna', 'Kista', 'Talin'], value: 'Hajipur|Delhi', splitter: '|'
             },
             {
-                label: 'Password', name: 'password', type: 'password', editable: false, onChangeHandler: this.onChangeHandler, value: '8765439@ettrw'
+                label: 'Password', name: 'password', type: 'password', editable: true, onChangeHandler: this.onChangeHandler, value: '8765439@ettrw'
             },
             {
                 label: 'Email', name: 'email', type: 'email', editable: true, onChangeHandler: this.onChangeHandler, value: 'mukesh060220@gmail.com'
@@ -25,7 +25,7 @@ class App extends Component {
                 label: 'Mobile No.', name: 'mobileNo', type: 'number', onChangeHandler: this.onChangeHandler, value: '7542007544'
             },
             {
-                label: 'User Type', name: 'userType', type: 'radio', editable: false, onChangeHandler: this.onChangeHandler, options: ['Admin', 'User'], value: 'Admin'
+                label: 'User Type', name: 'userType', type: 'radio', editable: true, onChangeHandler: this.onChangeHandler, options: ['Admin', 'User'], value: 'Admin'
             },
             {
                 label: 'Delivery Address', name: 'deliveryAddress', type: 'radio', editable: true, onChangeHandler: this.onChangeHandler, options: ['Office', 'Home'], value: 'Home'
@@ -41,8 +41,8 @@ class App extends Component {
         mode: 'edit' // edit/view
     }
 
-    submitHandler = formInput => {
-        console.log(formInput);
+    submitHandler = formPayLoad => {
+        console.log(formPayLoad);
     }
 
     render() {

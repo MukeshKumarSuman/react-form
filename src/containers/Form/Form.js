@@ -26,31 +26,61 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.payLoad = this.getPayload(props);
+        this.onChnageHandler = this.onChnageHandler.bind(this);
         this.state = {
             fields: []
         };
     }
 
-    getPayload() {
-        const payLoad = {};
-        this.props.fields.map(field => {
-            payLoad[field.name] = field.value;
-        });
-        return payLoad;
-    }
-
-    static getDerivedStateFromProps(nextProps) {
+    static getDerivedStateFromProps(nextProps, state) {
+        if (state.fields.length) {
+            return { ...state };
+        }
         return { ...nextProps };
     }
 
-    getColumnsFields() {
-        const fields = [...this.state.fields];
-        const totalNoOfFields = fields.length;
-        const column = this.state.columns;
-        const noOfFiledsInSIngleColumn = Math.ceil(totalNoOfFields / column);
-        const childrens = fields.map(field => this.getField(field));
+    componentWillUnmount() {
+        this.payLoad = null;
+        this.onChnageHandler = null;
+    }
 
-        return this.chunkArray(childrens, noOfFiledsInSIngleColumn);
+    onChnageHandler(e) {
+        const target = e.target;
+        const key = target.name;
+        let value = target.value;
+        const fieldType = target.type;
+        if (fieldType === 'checkbox') {
+            const splitter = this.getSplitter(key);
+            const checked = target.checked;
+            if (checked) {
+                const payLoad = this.payLoad[key].split(splitter).filter(fieldValue => fieldValue !== '');
+                payLoad.push(value);
+                value = payLoad.join(splitter);
+            } else {
+                value = this.payLoad[key].split(splitter).filter(fieldValue => fieldValue !== value).join(splitter);
+            }
+        }
+        if (fieldType === 'file') {
+            this.processFile(key, target.files[0], e);
+            return;
+        }
+        this.payLoad = { ...this.payLoad, [key]: value };
+        this.setState(prevState => {
+            const updatedFields = prevState.fields.map(field => {
+                const updatedField = { ...field };
+                if (updatedField.name === key) {
+                    updatedField.value = value;
+                    if (updatedField.validator) {
+                        updatedField.valid = updatedField.validator(updatedField.value);
+                    }
+                    if (updatedField.onChangeHandler) {
+                        updatedField.onChangeHandler(e);
+                    }
+                }
+                return updatedField;
+            });
+            return { ...prevState, fields: updatedFields }
+        });
     }
 
     getField(field) {
@@ -113,42 +143,47 @@ class Form extends Component {
         return this.state.fields.find(field => key === field.name);
     }
 
-    onChnageHandler = e => {
-        const target = e.target;
-        const key = target.name;
-        let value = target.value;
-        const fieldType = target.type;
-        if (fieldType === 'checkbox') {
-            const splitter = this.getSplitter(key);
-            const checked = target.checked;
-            if (checked) {
-                const payLoad = this.payLoad[key].split(splitter).filter(fieldValue => fieldValue !== '');
-                payLoad.push(value);
-                value = payLoad.join(splitter);
-            } else {
-                value = this.payLoad[key].split(splitter).filter(fieldValue => fieldValue !== value).join(splitter);
-            }
-        }
-        if (fieldType === 'file') {
-            this.processFile(key, target.files[0], e);
-            return;
-        }
-        this.payLoad = { ...this.payLoad, [key]: value };
-        this.setState(prevState => {
-            const updatedFields = prevState.fields.map(field => {
-                if (field.name === key) {
-                    field.value = value;
-                    if (field.validator) {
-                        field.valid = field.validator(field.value);
-                    }
-                    if (field.onChangeHandler) {
-                        field.onChangeHandler(e);
-                    }
-                }
-                return field;
-            });
-            return { fields: updatedFields }
+    getPayload() {
+        const payLoad = {};
+        this.props.fields.map(field => {
+            payLoad[field.name] = field.value;
         });
+        return payLoad;
+    }
+
+    getColumnsFields() {
+        const fields = [...this.state.fields];
+        const totalNoOfFields = fields.length;
+        const column = this.state.columns;
+        const noOfFiledsInSIngleColumn = Math.ceil(totalNoOfFields / column);
+        const childrens = fields.map(field => this.getField(field));
+        return this.chunkArray(childrens, noOfFiledsInSIngleColumn);
+    }
+
+    processFile(key, files) {
+        const raeder = new FileReader();
+        raeder.readAsDataURL(files);
+        raeder.onload = e => {
+            const value = raeder.result.split(',')[1];
+            this.payLoad = { ...this.payLoad, [key]: value };
+            this.setState(prevState => {
+                const updatedFields = prevState.fields.map(field => {
+                    const updatedField = { ...field };
+                    if (updatedField.name === key) {
+                        updatedField.value = value;
+                        updatedField.files = files;
+                        if (updatedField.validator) {
+                            updatedField.valid = updatedField.validator(files);
+                        }
+                        if (updatedField.onChangeHandler) {
+                            updatedField.onChangeHandler(e);
+                        }
+                    }
+                    return updatedField;
+                });
+                return { fields: updatedFields }
+            });
+        };
     }
 
     chunkArray(myArray, chunksSize) {
@@ -160,31 +195,6 @@ class Form extends Component {
             tempArray.push(myChunk);
         }
         return tempArray;
-    }
-
-    processFile(key, files) {
-        const raeder = new FileReader();
-        raeder.readAsDataURL(files);
-        raeder.onload = e => {
-            const value = raeder.result.split(',')[1];
-            this.payLoad = { ...this.payLoad, [key]: value };
-            this.setState(prevState => {
-                const updatedFields = prevState.fields.map(field => {
-                    if (field.name === key) {
-                        field.value = value;
-                        field.files = files;
-                        if (field.validator) {
-                            field.valid = field.validator(files);
-                        }
-                        if (field.onChangeHandler) {
-                            field.onChangeHandler(e);
-                        }
-                    }
-                    return field;
-                });
-                return { fields: updatedFields }
-            });
-        };
     }
 
     render() {
@@ -205,7 +215,7 @@ class Form extends Component {
 }
 
 Form.propTypes = {
-    fields: PropTypes.arrayOf.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
     header: PropTypes.string.isRequired
 }
 
