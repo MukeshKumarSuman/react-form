@@ -35,9 +35,12 @@ class App extends Component {
             },
             {
                 label: 'Image', name: 'image', type: 'file', editable: false, onChangeHandler: this.onChangeHandler, value: ''
+            },
+            {
+                label: 'Country', name: 'country', type: 'select', options: [{ label: 'India', value: 'India' }, { label: 'United Kingdom', value: 'United Kingdom' }, { label: 'US', value: 'US' }, { label: 'Russia', value: 'Russia' }], editable: true, onChangeHandler: this.onChangeHandler, value: ''
             }
         ],
-        columns: 2,
+        columns: 3,
         mode: 'edit' // edit/view
     }
 
@@ -48,7 +51,7 @@ class App extends Component {
     render() {
         return (
             <>
-                <Form {...this.state} onSubmit={this.submitHandler} header="Test Form" />
+                <Form {...this.state} onSubmit={this.submitHandler} header='Test Form' />
             </>
         );
     }

@@ -37,9 +37,10 @@
     padding-right: 10px;
     width: 40%;
   }
-  .fields > input {
+  .fields > input, select {
     border-radius: 5px;
     width: 56%;
+    float: right;
   }
 
   .fields > div {

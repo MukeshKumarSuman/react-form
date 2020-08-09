@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classes from './Form.css';
+import classes from './Form.scss';
 import Utils from '../../Utils/Utils';
 
 class Form extends Component {
@@ -85,15 +85,15 @@ class Form extends Component {
 
     getField(field) {
         const label = field.label ? field.label : Utils.decamelize(field.name);
-        const readonly = (field.editable !== undefined || field.editable !== null) ? !field.editable : false;
         if (this.state.mode === 'view') {
             return (
                 <div className={classes.fields}>
-                    <div key="label">{`${label}: `}</div>
-                    <div key="value">{field.value}</div>
+                    <div key='label' className={classes.label}>{`${label}: `}</div>
+                    <div key='value' className={classes.displayValue}>{field.value}</div>
                 </div>
             );
         }
+        const readonly = (field.editable !== undefined || field.editable !== null) ? !field.editable : false;
         if (field.type === 'radio' || field.type === 'checkbox') {
             const options = field.options.map((option, index) => {
                 const splitter = field.splitter ? field.splitter : ',';
@@ -120,11 +120,25 @@ class Form extends Component {
                 <div key={field.name} className={field.valid !== undefined && !field.valid ? `${classes.fields} ${classes.invalid_field}` : classes.fields}>
                     <label htmlFor={field.name}>{`${label}: `}</label>
                     <input type={field.type} id={field.name} name={field.name} onChange={this.onChnageHandler} readOnly={readonly} />
-                    {field.value && <div className="abc"><img src={`data:image/png;base64,${field.value}`} alt={field.alt} /></div>}
+                    {field.value && <div><img src={`data:image/png;base64,${field.value}`} alt={field.alt} /></div>}
                     {field.valid !== undefined && !field.valid && <p className={classes.error}>{field.validationMessage}</p>}
                 </div>
             );
         }
+
+        if (field.type === 'select') {
+            const currentValue = field.value || 'DEFAULT';
+            return (
+                <div key={field.name} className={field.valid !== undefined && !field.valid ? `${classes.fields} ${classes.invalid_field}` : classes.fields}>
+                    <label htmlFor={field.name}>{`Select ${label}: `}</label>
+                    <select id={field.name} name={field.name} value={currentValue} onChange={this.onChnageHandler}>
+                        <option key='DEFAULT' value='DEFAULT' disabled>Plesae Select Country...</option>
+                        {field.options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                    </select>
+                </div>
+            );
+        }
+
         return (
             <div key={field.name} className={field.valid !== undefined && !field.valid ? `${classes.fields} ${classes.invalid_field}` : classes.fields}>
                 <label htmlFor={field.name}>{`${label}: `}</label>
@@ -199,8 +213,11 @@ class Form extends Component {
 
     render() {
         const columnsFields = this.getColumnsFields();
-        //  const columnWidth = Math.floor(100 / columnsFields.length);
-        const childrens = columnsFields.map((columnFields, index) => <div key={index.toString()}>{columnFields}</div>);
+        const columnWidth = this.state.mode === 'view' ? `${Math.floor(100 / columnsFields.length)}%` : 'auto';
+        const divStyle = {
+            width: columnWidth
+        };
+        const childrens = columnsFields.map((columnFields, index) => <div key={index.toString()} style={divStyle}>{columnFields}</div>);
 
         return (
             <div className={classes.form}>
@@ -208,7 +225,7 @@ class Form extends Component {
                 <div className={classes.flex_container}>
                     {childrens}
                 </div>
-                { this.state.mode === 'edit' && <button type="button" className={classes.button} onClick={() => this.state.onSubmit(this.payLoad)}>Submit</button>}
+                { this.state.mode === 'edit' && <button type='button' className={classes.button} onClick={() => this.state.onSubmit(this.payLoad)}>Submit</button>}
             </div>
         );
     }

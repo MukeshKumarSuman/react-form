@@ -39,6 +39,7 @@
         "arrow-parens": ["error", "as-needed"],
         "array-callback-return": "off",
         "class-methods-use-this": "off",
+        "jsx-quotes": ["error", "prefer-single"],
         // Recat
         "react/state-in-constructor": "off",
         "indent": "off",
